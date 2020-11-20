@@ -1,0 +1,30 @@
+## This function allows to create a matrix which sets/gets value 
+## of the vector and sets/gets value of the mean.
+makeCacheMatrix <- function(x = matrix()){
+  inv <- NULL
+  set <- function(y){
+    x <<- y
+    inv <<- null
+  }
+  get <- function() {x}
+  setInverse <- function(inverse) {inv <<- inverse}
+  getInverse <- function() {inv}
+  list(set = set, get = get, setInverse = setInverse, getInverse = getInverse)
+}
+## This function allows us to inverse the previous matrix and calculates
+## the means. In addition, it first checks to see if the mean has already
+## been calculated. If so, it gets the mean from the cache and skips the 
+## computation. Otherwise, it calculates the mean of the data and sets the value
+## of the mean in the cache via the setmean function.
+
+cacheSolve <- function(x, ...){
+  inv <- x$getInverse()
+  if(!is.null(inv)){
+    message("getting cache data")
+    return(inv)
+  }
+  mat <- x$get()
+  inv <- solve(mat, ...)
+  x$setInverse(inv)
+  inv
+}   
